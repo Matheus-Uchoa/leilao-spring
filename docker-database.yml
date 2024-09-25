@@ -1,13 +1,23 @@
----
-  version: "3"
-  services:
-    postgresql: 
-      image: "postgres:10.5-alpine"
-      ports: 
-        - "5432:5432"
-      volumes: 
-        - "postgresqldata:/var/lib/postgresql/data"
-      env_file: 
-        - "variables.env"
-  volumes: 
-    postgresqldata: null
+version: "3"
+services:
+  postgresql:
+    image: "postgres:10.5-alpine"
+    ports:
+      - "5432:5432"
+    volumes:
+      - "postgresqldata:/var/lib/postgresql/data"
+    env_file:
+      - "variables.env"
+
+  pgadmin:
+    image: "dpage/pgadmin4"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@example.com"  # Altere para o seu e-mail desejado
+      PGADMIN_DEFAULT_PASSWORD: "admin"  # Altere para sua senha desejada
+    ports:
+      - "5050:80"  # Agora o pgAdmin estará acessível em localhost:5050
+    depends_on:
+      - postgresql
+
+volumes:
+  postgresqldata: null

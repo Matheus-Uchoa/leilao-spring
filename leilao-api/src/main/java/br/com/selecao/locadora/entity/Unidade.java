@@ -21,7 +21,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Entity
-@Table(name = "TB_UNIDADE")
+@Table(name = "unidade")
 @SequenceGenerator(name = "seq_unidade", sequenceName = "seq_unidade", allocationSize = 1)
 public class Unidade implements Serializable {
 
