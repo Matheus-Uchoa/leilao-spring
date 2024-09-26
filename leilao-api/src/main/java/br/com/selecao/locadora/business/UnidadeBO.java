@@ -33,18 +33,18 @@ public class UnidadeBO {
     }
 
     public Unidade editar(Long id, UnidadeDTO unidadeDTO) {
-        Unidade unidadeExistente = unidadeRepository.findById(id)
+        Unidade unidade = unidadeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Unidade não encontrada com o ID: " + id));
 
-        unidadeExistente.setNome(unidadeDTO.getNome());
+        unidade.setNome(unidadeDTO.getNome());
 
-        return unidadeRepository.save(unidadeExistente);
+        return unidadeRepository.save(unidade);
     }
 
     public void deletar(Long id) {
-        Unidade unidadeExistente = unidadeRepository.findById(id)
+        Unidade unidade = unidadeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Unidade não encontrada com o ID: " + id));
-        unidadeRepository.delete(unidadeExistente);
+        unidadeRepository.delete(unidade);
     }
 
 

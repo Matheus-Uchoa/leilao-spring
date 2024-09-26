@@ -3,12 +3,16 @@ package br.com.selecao.locadora.service;
 import br.com.selecao.locadora.business.UnidadeBO;
 import br.com.selecao.locadora.dto.UnidadeDTO;
 import br.com.selecao.locadora.entity.Unidade;
-import br.com.selecao.locadora.repository.UnidadeRepository;
+import br.com.selecao.locadora.validation.BeanValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.jboss.logging.Logger;
+
+import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/unidades")
@@ -16,7 +20,6 @@ public class UnidadeService {
 
     @Autowired
     private UnidadeBO unidadeBO;
-    private UnidadeRepository unidadeRepository;
     private static final Logger logger = Logger.getLogger(UnidadeService.class);
 
     @GetMapping
@@ -44,18 +47,28 @@ public class UnidadeService {
     }
 
     @PostMapping
-    public ResponseEntity<Object> salvar(@RequestBody UnidadeDTO unidadeDTO) {
+    public ResponseEntity<Object> salvar(@Valid @RequestBody UnidadeDTO unidadeDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, String> errors = BeanValidationUtil.getValidationErrors(result);
+            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        }
+
         try {
-            Unidade unidadeSalva = unidadeBO.salvar(unidadeDTO);
-            return new ResponseEntity<>(unidadeSalva, HttpStatus.CREATED);
+            Unidade unidade = unidadeBO.salvar(unidadeDTO);
+            return new ResponseEntity<>(unidade, HttpStatus.CREATED);
         } catch (Exception e) {
             logger.error("Erro ao salvar unidade", e);
             return new ResponseEntity<>("Erro ao salvar unidade", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+
     @PutMapping("/{id}")
-    public ResponseEntity<Object> editar(@PathVariable Long id, @RequestBody UnidadeDTO unidadeDTO) {
+    public ResponseEntity<Object> editar(@PathVariable Long id,@Valid @RequestBody UnidadeDTO unidadeDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, String> errors = BeanValidationUtil.getValidationErrors(result);
+            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        }
         try {
             Unidade unidade = unidadeBO.editar(id, unidadeDTO);
             return ResponseEntity.ok(unidade);
