@@ -6,14 +6,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -26,12 +21,30 @@ import java.io.Serializable;
 public class Unidade implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Alterando a estratégia para auto incremento
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_unidade")
     @EqualsAndHashCode.Include
     private Long id;
 
+
     @Column(name = "NOME")
     private String nome;
+
+    @Column(name = "createdat", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updatedat")
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
 }
 

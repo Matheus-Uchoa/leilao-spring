@@ -14,7 +14,7 @@ CREATE TABLE empresa (
                          usuario VARCHAR(20) NOT NULL UNIQUE,
                          senha VARCHAR(128),
                          createdAt TIMESTAMP NOT NULL,
-                         updatedAt TIMESTAMP NOT NULL,
+                         updatedAt TIMESTAMP,
                          CONSTRAINT empresa_cnpj_uk UNIQUE (cnpj),
                          CONSTRAINT empresa_usuario_uk UNIQUE (usuario)
 );
@@ -27,7 +27,7 @@ CREATE TABLE leilao (
                         empresa_id INTEGER NOT NULL,  -- Chave estrangeira para a tabela empresa
                         inicioPrevisto TIMESTAMP NOT NULL,
                         createdAt TIMESTAMP NOT NULL,
-                        updatedAt TIMESTAMP NOT NULL,
+                        updatedAt TIMESTAMP,
                         CONSTRAINT leilao_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa (id)
 );
 
@@ -40,7 +40,7 @@ CREATE TABLE lote (
                       unidade_id INTEGER NOT NULL,  -- Referência à tabela unidade
                       leilao_id INTEGER NOT NULL,
                       createdAt TIMESTAMP NOT NULL,
-                      updatedAt TIMESTAMP NOT NULL,
+                      updatedAt TIMESTAMP,
                       CONSTRAINT lote_leilao_fk FOREIGN KEY (leilao_id) REFERENCES leilao (id),
                       CONSTRAINT lote_unidade_fk FOREIGN KEY (unidade_id) REFERENCES unidade (id));
 
@@ -56,7 +56,7 @@ CREATE TABLE unidade (
                          id SERIAL PRIMARY KEY,
                          nome VARCHAR(128) NOT NULL,
                              createdAt TIMESTAMP NOT NULL,
-                         updatedAt TIMESTAMP NOT NULL
+                         updatedAt TIMESTAMP
 );
 
 
