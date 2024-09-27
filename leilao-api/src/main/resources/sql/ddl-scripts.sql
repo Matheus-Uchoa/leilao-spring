@@ -46,10 +46,10 @@ CREATE TABLE lote (
 
 CREATE TABLE comprador (
                            empresa_id INTEGER NOT NULL,
-                           leilao_id INTEGER NOT NULL,
-                           PRIMARY KEY (empresa_id, leilao_id),
+                           lote_id INTEGER NOT NULL,
+                           PRIMARY KEY (empresa_id, lote_id),
                            CONSTRAINT comprador_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa (id),
-                           CONSTRAINT comprador_leilao_fk FOREIGN KEY (leilao_id) REFERENCES leilao (id)
+                           CONSTRAINT comprador_leilao_fk FOREIGN KEY (lote_id) REFERENCES lote (id)
 );
 
 CREATE TABLE unidade (

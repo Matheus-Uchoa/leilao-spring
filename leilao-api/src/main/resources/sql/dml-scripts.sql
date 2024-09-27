@@ -107,33 +107,33 @@ VALUES (10, 'Lote de utensílios domésticos', 100, 30000.00, 10, 10, NOW(), NOW
 
 
 
--- Inserindo dados na tabela comprador (empresa_id e leilao_id válidos)
-INSERT INTO comprador (empresa_id, leilao_id)
-VALUES (1, 1);
+-- Inserindo dados na tabela comprador (empresa_id e lote_id válidos)
+INSERT INTO comprador (empresa_id, lote_id)
+VALUES (1, 11);
 
-INSERT INTO comprador (empresa_id, leilao_id)
-VALUES (2, 1);
+INSERT INTO comprador (empresa_id, lote_id)
+VALUES (2, 10);
 
-INSERT INTO comprador (empresa_id, leilao_id)
+INSERT INTO comprador (empresa_id, lote_id)
 VALUES (3, 2);
 
-INSERT INTO comprador (empresa_id, leilao_id)
+INSERT INTO comprador (empresa_id, lote_id)
 VALUES (4, 2);
 
-INSERT INTO comprador (empresa_id, leilao_id)
+INSERT INTO comprador (empresa_id, lote_id)
 VALUES (5, 3);
 
-INSERT INTO comprador (empresa_id, leilao_id)
+INSERT INTO comprador (empresa_id, lote_id)
 VALUES (6, 4);
 
-INSERT INTO comprador (empresa_id, leilao_id)
+INSERT INTO comprador (empresa_id, lote_id)
 VALUES (7, 5);
 
-INSERT INTO comprador (empresa_id, leilao_id)
+INSERT INTO comprador (empresa_id, lote_id)
 VALUES (8, 6);
 
-INSERT INTO comprador (empresa_id, leilao_id)
+INSERT INTO comprador (empresa_id, lote_id)
 VALUES (9, 7);
 
-INSERT INTO comprador (empresa_id, leilao_id)
+INSERT INTO comprador (empresa_id, lote_id)
 VALUES (10, 8);
