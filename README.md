@@ -1,3 +1,6 @@
+# Teste da API
+utilize o endpoint http://localhost:8081/swagger-ui/index.html para acessar a tela da documentação do swagger e realizar as requisições de cada entidade
+
 # AZ Avaliação
 
 Projeto para avaliação e seleção de candidatos a vaga de programador full stack da empresa AZ Tecnologia em Gestão. 
