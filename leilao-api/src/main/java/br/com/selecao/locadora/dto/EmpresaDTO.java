@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Data
 @Builder
@@ -20,6 +21,7 @@ public class EmpresaDTO {
     private String razaoSocial;
 
     @NotBlank(message = "O CNPJ não pode estar vazio ou em branco.")
+    @Pattern(regexp = "\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}", message = "CNPJ inválido. Deve seguir o formato 00.000.000/0000-00")
     private String cnpj;
 
     private String logradouro;
@@ -31,7 +33,7 @@ public class EmpresaDTO {
     private String complemento;
 
     private String bairro;
-
+    @Pattern(regexp = "\\d{5}-\\d{3}", message = "CEP inválido. Deve seguir o formato 00000-000")
     private String cep;
 
     private String telefone;
