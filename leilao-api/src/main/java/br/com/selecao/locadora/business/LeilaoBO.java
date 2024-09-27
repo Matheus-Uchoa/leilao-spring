@@ -3,8 +3,10 @@ package br.com.selecao.locadora.business;
 import br.com.selecao.locadora.dto.LeilaoDTO;
 import br.com.selecao.locadora.entity.Empresa;
 import br.com.selecao.locadora.entity.Leilao;
+import br.com.selecao.locadora.entity.Lote;
 import br.com.selecao.locadora.repository.EmpresaRepository;
 import br.com.selecao.locadora.repository.LeilaoRepository;
+import br.com.selecao.locadora.repository.LoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +20,12 @@ public class LeilaoBO {
     
     private final LeilaoRepository leilaoRepository;
     private final EmpresaRepository empresaRepository;
+    private final LoteRepository loteRepository;
     @Autowired
-    public LeilaoBO(LeilaoRepository leilaoRepository, EmpresaRepository empresaRepository) {
+    public LeilaoBO(LeilaoRepository leilaoRepository, EmpresaRepository empresaRepository, LoteRepository loteRepository) {
         this.leilaoRepository = leilaoRepository;
         this.empresaRepository = empresaRepository;
+        this.loteRepository =  loteRepository;
     }
 
 
@@ -65,9 +69,13 @@ public class LeilaoBO {
         return leilaoRepository.save(leilao);
     }
     public void deletar(Long id) {
-        Leilao leilaoExistente = leilaoRepository.findById(id)
+        Leilao lote = leilaoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Leilão não encontrado com o ID: " + id));
 
-        leilaoRepository.delete(leilaoExistente);
+        List<Lote> lotes = loteRepository.findByLeilao(lote);
+        if (!lotes.isEmpty()) {
+            loteRepository.deleteAll(lotes);
+        }
+        leilaoRepository.delete(lote);
     }
 }
