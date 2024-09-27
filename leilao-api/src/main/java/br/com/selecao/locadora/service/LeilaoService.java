@@ -89,8 +89,7 @@ public class LeilaoService {
             leilaoBO.deletar(id);
             return new ResponseEntity<>("Leilão deletado com sucesso", HttpStatus.NO_CONTENT);
         } catch (RuntimeException e) {
-            logger.error("Erro ao deletar leilão com ID: {}", id, e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             logger.error("Erro inesperado ao deletar leilão com ID: {}", id, e);
             return new ResponseEntity<>("Erro inesperado ao deletar o leilão", HttpStatus.INTERNAL_SERVER_ERROR);

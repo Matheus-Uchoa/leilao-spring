@@ -2,6 +2,7 @@ package br.com.selecao.locadora.business;
 
 import br.com.selecao.locadora.dto.UnidadeDTO;
 import br.com.selecao.locadora.entity.Unidade;
+import br.com.selecao.locadora.repository.LoteRepository;
 import br.com.selecao.locadora.repository.UnidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +13,13 @@ import java.util.Optional;
 @Service
 public class UnidadeBO {
 
-    @Autowired
-    private UnidadeRepository unidadeRepository;
+    private final UnidadeRepository unidadeRepository;
+    private final LoteRepository loteRepository;
+
+    public UnidadeBO(UnidadeRepository unidadeRepository, LoteRepository loteRepository) {
+        this.unidadeRepository = unidadeRepository;
+        this.loteRepository = loteRepository;
+    }
 
     public List<Unidade> buscarTodos(){
         return unidadeRepository.findAll();
@@ -44,6 +50,12 @@ public class UnidadeBO {
     public void deletar(Long id) {
         Unidade unidade = unidadeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Unidade não encontrada com o ID: " + id));
+        boolean unidadeRelacionadaALotes = loteRepository.existsByUnidadeId(id);
+
+        if (unidadeRelacionadaALotes) {
+            throw new RuntimeException("Não é possível excluir a unidade, pois há lotes associados a ela.");
+        }
+
         unidadeRepository.delete(unidade);
     }
 

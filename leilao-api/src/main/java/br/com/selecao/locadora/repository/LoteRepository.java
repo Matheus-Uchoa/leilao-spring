@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface LoteRepository extends JpaRepository<Lote, Long> {
     List<Lote> findByLeilao(Leilao leilao);
+    boolean existsByUnidadeId(Long unidadeId);
 
 }

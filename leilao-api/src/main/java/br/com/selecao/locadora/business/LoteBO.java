@@ -10,6 +10,7 @@ import br.com.selecao.locadora.repository.LeilaoRepository;
 import br.com.selecao.locadora.repository.LoteRepository;
 import br.com.selecao.locadora.repository.UnidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import br.com.selecao.locadora.dto.reponse.LeilaoSimplificadoDTO;
 import br.com.selecao.locadora.dto.reponse.VendedorSimplificadoDTO;
@@ -119,9 +120,17 @@ public class LoteBO {
     }
 
     public void deletar(Long id) {
-        Lote lote = loteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Lote não encontrado com o ID: " + id));
-        loteRepository.delete(lote);
+        try {
+            Lote lote = loteRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Lote não encontrado com o ID: " + id));
+
+            loteRepository.delete(lote);
+
+        } catch (DataIntegrityViolationException e) {
+            throw new RuntimeException("Não é possível excluir o lote com ID: " + id + " porque ele está relacionado a um ou mais compradores.");
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao tentar excluir o lote com ID: " + id, e);
+        }
     }
 
 }

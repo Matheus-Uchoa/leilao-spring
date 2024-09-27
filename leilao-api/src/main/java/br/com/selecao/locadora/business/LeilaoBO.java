@@ -4,6 +4,7 @@ import br.com.selecao.locadora.dto.LeilaoDTO;
 import br.com.selecao.locadora.entity.Empresa;
 import br.com.selecao.locadora.entity.Leilao;
 import br.com.selecao.locadora.entity.Lote;
+import br.com.selecao.locadora.repository.CompradorRepository;
 import br.com.selecao.locadora.repository.EmpresaRepository;
 import br.com.selecao.locadora.repository.LeilaoRepository;
 import br.com.selecao.locadora.repository.LoteRepository;
@@ -17,19 +18,22 @@ import java.util.Optional;
 
 @Service
 public class LeilaoBO {
-    
+
     private final LeilaoRepository leilaoRepository;
     private final EmpresaRepository empresaRepository;
     private final LoteRepository loteRepository;
+    private final CompradorRepository compradorRepository;
+
     @Autowired
-    public LeilaoBO(LeilaoRepository leilaoRepository, EmpresaRepository empresaRepository, LoteRepository loteRepository) {
+    public LeilaoBO(LeilaoRepository leilaoRepository, EmpresaRepository empresaRepository, LoteRepository loteRepository, CompradorRepository compradorRepository) {
         this.leilaoRepository = leilaoRepository;
         this.empresaRepository = empresaRepository;
-        this.loteRepository =  loteRepository;
+        this.loteRepository = loteRepository;
+        this.compradorRepository = compradorRepository;
     }
 
 
-    public List<Leilao> buscarTodos(){
+    public List<Leilao> buscarTodos() {
         return leilaoRepository.findAll();
     }
 
@@ -68,14 +72,23 @@ public class LeilaoBO {
 
         return leilaoRepository.save(leilao);
     }
+
     public void deletar(Long id) {
-        Leilao lote = leilaoRepository.findById(id)
+        Leilao leilao = leilaoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Leilão não encontrado com o ID: " + id));
 
-        List<Lote> lotes = loteRepository.findByLeilao(lote);
+        List<Lote> lotes = loteRepository.findByLeilao(leilao);
+
+        boolean lotesComprados = lotes.stream()
+                .anyMatch(lote -> compradorRepository.existsByLoteId(lote.getId()));
+
+        if (lotesComprados) {
+            throw new RuntimeException("Não é possível excluir o leilão, pois um ou mais lotes estão comprados.");
+        }
+
         if (!lotes.isEmpty()) {
             loteRepository.deleteAll(lotes);
         }
-        leilaoRepository.delete(lote);
+        leilaoRepository.delete(leilao);
     }
 }

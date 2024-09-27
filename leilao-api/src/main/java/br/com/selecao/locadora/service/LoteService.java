@@ -40,8 +40,7 @@ public class LoteService {
             LoteResponseDTO loteDTO = loteBO.buscarPorId(id); // Busca o LoteResponseDTO
             return new ResponseEntity<>(loteDTO, HttpStatus.OK);
         } catch (RuntimeException e) {
-            logger.error("Erro ao buscar lote com ID: " + id, e);
-            return new ResponseEntity<>("Lote não encontrado com o ID: " + id, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             logger.error("Erro inesperado ao buscar lote", e);
             return new ResponseEntity<>("Erro inesperado", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -92,8 +91,7 @@ public class LoteService {
             loteBO.deletar(id);
             return new ResponseEntity<>("Lote deletado com sucesso", HttpStatus.NO_CONTENT);
         } catch (RuntimeException e) {
-            logger.error("Erro ao deletar lote com ID: " + id, e);
-            return new ResponseEntity<>("Lote não encontrado com o ID: " + id, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             logger.error("Erro inesperado ao deletar lote", e);
             return new ResponseEntity<>("Erro inesperado", HttpStatus.INTERNAL_SERVER_ERROR);

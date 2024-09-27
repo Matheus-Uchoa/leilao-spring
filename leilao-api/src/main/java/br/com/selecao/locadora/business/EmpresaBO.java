@@ -6,6 +6,7 @@ import br.com.selecao.locadora.entity.Empresa;
 import br.com.selecao.locadora.entity.Unidade;
 import br.com.selecao.locadora.repository.EmpresaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -82,18 +83,22 @@ public class EmpresaBO {
 
     public void deletar(Long id) {
         Empresa empresa = empresaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Unidade não encontrada com o ID: " + id));
-        empresaRepository.delete(empresa);
+                .orElseThrow(() -> new RuntimeException("Empresa não encontrada com o ID: " + id));
+
+        try {
+            empresaRepository.delete(empresa);
+        } catch (DataIntegrityViolationException e) {
+            throw new RuntimeException("Não é possível excluir a empresa porque ela está associada a um leilão como vendedor.");
+        }
     }
 
+
     public void validar(EmpresaDTO empresaDTO, Long id) {
-        // Validação do CNPJ
         Optional<Empresa> empresaExistentePorCNPJ = empresaRepository.findByCnpj(empresaDTO.getCnpj());
         if (empresaExistentePorCNPJ.isPresent() && (id == null || !empresaExistentePorCNPJ.get().getId().equals(id))) {
             throw new RuntimeException("CNPJ já cadastrado por outra empresa.");
         }
 
-        // Validação do Usuário
         Optional<Empresa> empresaExistentePorUsuario = empresaRepository.findByUsuario(empresaDTO.getUsuario());
         if (empresaExistentePorUsuario.isPresent() && (id == null || !empresaExistentePorUsuario.get().getId().equals(id))) {
             throw new RuntimeException("Usuário já cadastrado por outra empresa.");

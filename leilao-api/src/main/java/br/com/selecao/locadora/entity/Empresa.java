@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Entity
 @Table(name = "empresa")
-@SequenceGenerator(name = "seq_empresa", sequenceName = "seq_empresa", allocationSize = 1)
 public class Empresa implements Serializable {
 
     @Id

@@ -57,11 +57,9 @@ public class EmpresaService {
             Empresa empresa = empresaBO.salvar(empresaDTO);
             return new ResponseEntity<>(empresa, HttpStatus.CREATED);
         } catch (RuntimeException e) {
-            // Captura exceções de validação de unicidade e retorna a mensagem de erro
             logger.error("Erro ao salvar empresa", e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            // Captura qualquer erro inesperado e retorna uma mensagem genérica de erro
             logger.error("Erro ao salvar empresa", e);
             return new ResponseEntity<>("Erro ao salvar empresa", HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -90,8 +88,7 @@ public class EmpresaService {
             empresaBO.deletar(id);
             return new ResponseEntity<>("Empresa deletada com sucesso", HttpStatus.NO_CONTENT);
         } catch (RuntimeException e) {
-            logger.error("Erro ao deletar unidade com ID: " + id, e);
-            return new ResponseEntity<>("Empresa não encontrada com o ID: " + id, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             logger.error("Erro inesperado ao deletar unidade com ID: " + id, e);
             return new ResponseEntity<>("Erro inesperado", HttpStatus.INTERNAL_SERVER_ERROR);

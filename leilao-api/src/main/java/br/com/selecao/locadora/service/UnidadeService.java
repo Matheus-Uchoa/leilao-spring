@@ -87,8 +87,7 @@ public class UnidadeService {
             unidadeBO.deletar(id);
             return new ResponseEntity<>("Unidade deletada com sucesso", HttpStatus.NO_CONTENT);
         } catch (RuntimeException e) {
-            logger.error("Erro ao deletar unidade com ID: " + id, e);
-            return new ResponseEntity<>("Unidade não encontrada com o ID: " + id, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             logger.error("Erro inesperado ao deletar unidade com ID: " + id, e);
             return new ResponseEntity<>("Erro inesperado", HttpStatus.INTERNAL_SERVER_ERROR);
